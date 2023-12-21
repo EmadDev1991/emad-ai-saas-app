@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import * as z from "zod";
@@ -120,7 +120,7 @@ const ConversationPage = () => {
         {chats.map((chat, index) => (
           <div
             key={index}
-            className="p-4 lg:px-8 bg-gray-900 m-6 rounded-lg text-purple-600"
+            className="p-4  bg-[#141d2f] my-6 mx-4 rounded-lg text-purple-600"
           >
             <p className="text-xl font-bold pb-4">{chat.question}</p>
             <p className="text-gray-300 text-[14px]  leading-7 ">
@@ -128,7 +128,12 @@ const ConversationPage = () => {
             </p>
           </div>
         ))}
-        {isLoading && <p>loading</p>}
+        {isLoading && (
+          <div className="mx-4 bg-[#141d2f] rounded-md flex justify-center items-center flex-col gap-2 p-4  ">
+            <Loader className="animate-spin" />
+            <p className="text-zinc-400">Emad AI thinking</p>
+          </div>
+        )}
       </div>
     </div>
   );

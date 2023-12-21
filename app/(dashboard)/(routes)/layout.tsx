@@ -6,7 +6,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 const layout = ({ children }: LayoutProps) => {
-  return <div className="bg-[#111827] h-full text-white relative">
+  return <div className="bg-[#111827] min-h-full text-white relative">
      <div className="hidden h-full   md:flex md:w-72 md:flex-col md:fixed md:inset-y-50 z-[80]">
        <SideBar/>
       </div>
