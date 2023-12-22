@@ -12,7 +12,7 @@ import * as z from "zod";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { amountOptions, resolutionOptions } from "./constants";
+import {  resolutionOptions } from "./constants";
 import {
   Select,
   SelectContent,
@@ -33,7 +33,7 @@ const ImageGenerationPage = () => {
     defaultValues: {
       prompt: "",
       amount: "1",
-      resolution: "512x512",
+      resolution: "1024x1024",
     },
   });
 
@@ -99,37 +99,13 @@ const ImageGenerationPage = () => {
               )}
             />
 
-            <FormField
-              name="amount"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="col-span-12 sm:col-span-4 lg:col-span-2  ">
-                  <Select
-                    disabled={isLoading}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger className=" bg-transparent focus:ring-offset-transparent focus-visible:ring-0 focus-visible:ring-transparent text-xs">
-                      <SelectValue defaultValue={field.value} />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#111827] border-0 text-white">
-                      {amountOptions.map((amount) => (
-                        <SelectItem key={amount.label} value={amount.value}>
-                          {amount.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
+         
 
             <FormField
               name="resolution"
               control={form.control}
               render={({ field }) => (
-                <FormItem className=" col-span-12 sm:col-span-4  lg:col-span-2 ">
+                <FormItem className=" col-span-12 sm:col-span-4  lg:col-span-3 ">
                   <Select
                     disabled={isLoading}
                     onValueChange={field.onChange}
@@ -154,7 +130,7 @@ const ImageGenerationPage = () => {
               )}
             />
 
-            <div className="  col-span-12 sm:col-span-4 lg:col-span-2   flex justify-right items-center gap-3   ">
+            <div className="  col-span-12 sm:col-span-4 lg:col-span-3  flex justify-right items-center gap-3   ">
               <Button
                 className="w-full bg-pink-700 hover:bg-pink-900"
                 disabled={isLoading}
@@ -181,14 +157,14 @@ const ImageGenerationPage = () => {
           </div>
         )}
 
-      <div className=" px-4 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+      <div className=" px-4  mt-8">
         {images.map((image, index) => (
           <Card
             key={image}
             className=" border-none bg-[#141d2f] rounded-lg overflow-hidden p-4"
           >
             <div className="relative aspect-square">
-              <Image alt="image" fill src={image} sizes="250px" className="rounded-md" />
+              <Image alt="image" fill src={image} sizes="1024px" className="rounded-md aspect-square" />
             </div>
             <CardFooter className="px-0 py-2 ">
               <Button

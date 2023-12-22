@@ -35,7 +35,7 @@ export const POST = async (request: Request) => {
         }
 
 
-        const response = await openai.images.generate({ prompt: prompt, n: +amount, size: resolution, model: "dall-e-2" })
+        const response = await openai.images.generate({ prompt: prompt, n: +amount, size: resolution, model: "dall-e-3" })
 
         console.log(response)
         if (response) {
