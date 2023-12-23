@@ -1,16 +1,21 @@
 import { NextResponse } from 'next/server';
-
-
+export const runtime = 'edge'
 
 
 import { OpenAI } from 'openai'
 import { auth } from '@clerk/nextjs'
-import { increaseApiLimit, checkApiLimit } from '@/lib/api-limit';
-
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
+
+
+
+const instructionMessage = { 
+    role: 'system', 
+    content:'you are a code generator. you must answer only in markdown code snippets. use code comments for explanation'
+}
+
 
 
 export const POST = async (request: Request) => {
@@ -18,9 +23,6 @@ export const POST = async (request: Request) => {
         const { userId } = auth()
         const body = await request.json()
         const { messages } = body;
-
-        console.log(messages)
-
 
 
         // check if user is authenticated
@@ -33,20 +35,11 @@ export const POST = async (request: Request) => {
         if (!messages) {
             return new NextResponse('messages are required', { status: 400 })
         }
-        
-        const freeTrial = await checkApiLimit()
-        console.log(freeTrial)
-        if(!freeTrial){
-            return new NextResponse('Free trial has expired', {status:403})
-        }
 
         const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
-            messages: messages,
+            messages: [ instructionMessage, ...messages],
         })
-
-
-        await increaseApiLimit()
 
 
 
@@ -56,7 +49,9 @@ export const POST = async (request: Request) => {
 
 
     } catch (error) {
-        return new NextResponse('internal error', { status: 500 })
+        return new NextResponse('Code generation internal error', { status: 500 })
     }
 
 }
+
+
