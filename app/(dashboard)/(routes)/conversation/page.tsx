@@ -8,9 +8,10 @@ import { MessageSquare, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import * as z from "zod";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/app/hooks/use-pro-modal";
 
 // Define a type for the user messages
 type ChatCompletionRequestMessage = {
@@ -24,6 +25,7 @@ type ChatProps = {
 };
 
 const ConversationPage = () => {
+  const proModal = useProModal()
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [chats, setChats] = useState<ChatProps[]>([]);
@@ -45,12 +47,9 @@ const ConversationPage = () => {
       const userMessage = { role: "user", content: values.prompt };
       const newUserMessage = [...messages, userMessage];
 
-      const response = await axios.post(
-        "http://localhost:3001/api/conversation",
-        {
-          messages: newUserMessage,
-        }
-      );
+      const response = await axios.post("/api/conversation", {
+        messages: newUserMessage,
+      });
 
       setMessages((current) => [...current, userMessage]);
 
@@ -61,9 +60,12 @@ const ConversationPage = () => {
         ]);
         form.reset();
       }
-    } catch (error) {
+    } catch (error: any) {
       /// TO DO open pro modal
-      console.log("error");
+      if(error?.response?.status === 403){
+        proModal.onOpen()
+      }
+      
     } finally {
       router.refresh();
     }

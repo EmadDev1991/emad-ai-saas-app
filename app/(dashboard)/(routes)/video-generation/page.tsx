@@ -11,11 +11,13 @@ import * as z from "zod";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/app/hooks/use-pro-modal";
 
 
 
 
 const VideoGenerationPage = () => {
+  const proModal = useProModal()
   const router = useRouter();
   const [video, setVideo] = useState<string>();
 
@@ -43,9 +45,11 @@ const VideoGenerationPage = () => {
       form.reset();
 
      
-    } catch (error) {
+    } catch (error:any) {
       /// TO DO open pro modal
-      console.log("error");
+      if(error?.response?.status === 403){
+        proModal.onOpen()
+      }
     } finally {
       router.refresh();
     }

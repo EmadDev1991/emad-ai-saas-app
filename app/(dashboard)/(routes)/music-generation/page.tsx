@@ -11,6 +11,7 @@ import * as z from "zod";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/app/hooks/use-pro-modal";
 
 
 
@@ -20,6 +21,7 @@ type ChatProps = {
 };
 
 const MusicGenerationPage = () => {
+  const proModal = useProModal()
   const router = useRouter();
   const [music, setMusic] = useState<string>();
   const [chats, setChats] = useState<ChatProps[]>([]);
@@ -47,9 +49,11 @@ const MusicGenerationPage = () => {
       form.reset();
 
      
-    } catch (error) {
+    } catch (error:any) {
       /// TO DO open pro modal
-      console.log("error");
+      if(error?.response?.status === 403){
+        proModal.onOpen()
+      }
     } finally {
       router.refresh();
     }

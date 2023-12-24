@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import ReactMarkdown from "react-markdown";
+import { useProModal } from "@/app/hooks/use-pro-modal";
 
 // Define a type for the user messages
 type ChatCompletionRequestMessage = {
@@ -27,6 +28,7 @@ type ChatProps = {
 };
 
 const CodeGenerationPage = () => {
+  const proModal = useProModal();
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [chats, setChats] = useState<ChatProps[]>([]);
@@ -63,9 +65,11 @@ const CodeGenerationPage = () => {
         ]);
         form.reset();
       }
-    } catch (error) {
+    } catch (error: any) {
       /// TO DO open pro modal
-      console.log("error");
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }

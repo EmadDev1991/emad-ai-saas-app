@@ -22,8 +22,10 @@ import {
 } from "@/components/ui/select";
 import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { useProModal } from "@/app/hooks/use-pro-modal";
 
 const ImageGenerationPage = () => {
+  const proModal = useProModal()
   const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
 
@@ -47,7 +49,7 @@ const ImageGenerationPage = () => {
       setImages([]);
 
       const response = await axios.post(
-        "http://localhost:3001/api/image-generation",
+        "/api/image-generation",
         values
       );
 
@@ -59,9 +61,11 @@ const ImageGenerationPage = () => {
 
       setImages(generatedImagesUrls);
       form.reset()
-    } catch (error) {
+    } catch (error:any) {
       /// TO DO open pro modal
-      console.log("error");
+      if(error?.response?.status === 403){
+        proModal.onOpen()
+      }
     } finally {
       router.refresh();
     }
