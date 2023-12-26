@@ -6,6 +6,7 @@ import Replicate from "replicate";
 import { auth } from '@clerk/nextjs'
 
 import { increaseApiLimit, checkApiLimit } from '@/lib/api-limit';
+import { checkSubscription } from '@/lib/subscription';
 
 
 const replicate = new Replicate({
@@ -17,8 +18,9 @@ export const POST = async (request: Request) => {
         const { userId } = auth()
         const body = await request.json()
         const { prompt } = body;
+        const isPro = await checkSubscription()
 
-        console.log(prompt)
+
 
 
 
@@ -34,9 +36,9 @@ export const POST = async (request: Request) => {
         }
 
         const freeTrial = await checkApiLimit()
-        console.log(freeTrial)
-        if(!freeTrial){
-            return new NextResponse('Free trial has expired', {status:403})
+
+        if (!freeTrial && !isPro) {
+            return new NextResponse('Free trial has expired', { status: 403 })
         }
 
         const response = await replicate.run(
