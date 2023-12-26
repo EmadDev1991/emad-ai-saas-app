@@ -8,7 +8,12 @@ import SideBar from "./sideBar";
 import { useState } from "react";
 
 
-const MobileSidebar = () => {
+interface MobileSidebarProps {
+  apiLimitCount? : number
+  isPro: boolean
+}
+
+const MobileSidebar = ({apiLimitCount= 0, isPro=false}: MobileSidebarProps) => {
     const [open, setOpen] = useState(false);
 
   return (
@@ -25,7 +30,7 @@ const MobileSidebar = () => {
       </SheetTrigger>
 
       <SheetContent  side='left' className="p-0 w-full  sm:w-[300px] md:hidden bg-[#141d2f] text-white ">
-        <SideBar linkClicked ={()=>setOpen(false)} />
+        <SideBar linkClicked ={()=>setOpen(false)} apiLimitCount={apiLimitCount} isPro={isPro} />
       </SheetContent>
     </Sheet>
   );

@@ -22,6 +22,7 @@ const monserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 interface sidebarProps {
   linkClicked?: () => void;
   apiLimitCount?: number;
+  isPro: boolean
 }
 
 const routes = [
@@ -74,7 +75,7 @@ const routes = [
   },
 ];
 
-const SideBar = ({ linkClicked, apiLimitCount= 0 }: sidebarProps) => {
+const SideBar = ({ linkClicked, apiLimitCount= 0, isPro=false }: sidebarProps) => {
   const pathName = usePathname();
   return (
     <div className="space-y-4 py-4 h-full bg-[#141d2f] text-white  z-30">
@@ -110,7 +111,7 @@ const SideBar = ({ linkClicked, apiLimitCount= 0 }: sidebarProps) => {
         </div>
       </div>
 
-      <FreeCounter apiLimitCount={apiLimitCount}/>
+      <FreeCounter apiLimitCount={apiLimitCount}  isPro={isPro}/>
     </div>
   );
 };

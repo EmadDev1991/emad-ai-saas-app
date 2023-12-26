@@ -20,10 +20,11 @@ import {
   Zap,
 } from "lucide-react";
 
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import axios from "axios";
 
 const tools = [
   {
@@ -64,6 +65,22 @@ const tools = [
 
 const ProModal = () => {
   const proModal = useProModal();
+  const [ loading, setLoading] = useState(false)
+ 
+  const onSubscribe =async ()=>{
+    try{
+      setLoading(true)
+      const response = await axios.get('/api/stripe')
+      window.location.href = response.data.url; 
+
+    }catch(error){
+      console.log(error, 'stripe_client_error')
+    }finally{
+      setLoading(false)
+    }
+  }
+
+
   return (
     <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
       <DialogContent className="z-50 bg-[#141d2f] text-white border-0 rounded-md">
@@ -90,7 +107,7 @@ const ProModal = () => {
           ))}
         </div>
         <DialogFooter>
-          <Button className="w-full my-4 bg-gradient-to-r from-purple-400 to-pink-600 flex justify-center items-center gap-2">
+          <Button onClick={onSubscribe} className="w-full my-4 bg-gradient-to-r from-purple-400 to-pink-600 flex justify-center items-center gap-2">
             <Zap className="w-4" />
             <p>Upgrade</p>
           </Button>

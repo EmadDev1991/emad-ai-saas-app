@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MAX_FREE_COUNTS } from "@/constants";
 import { Progress } from "./ui/progress";
 import { Button } from "./ui/button";
@@ -9,12 +9,23 @@ import { Zap } from "lucide-react";
 import { useProModal } from "@/app/hooks/use-pro-modal";
 
 interface FreeCounterProps {
-  linkClicked?: () => void;
   apiLimitCount?: number;
+  isPro: boolean
 }
 
-const FreeCounter = ({ apiLimitCount = 0 }: FreeCounterProps) => {
+const FreeCounter = ({ apiLimitCount = 0, isPro }: FreeCounterProps) => {
 const proModal = useProModal()
+const [ mounted , setMounted] = useState(false)
+
+useEffect(()=>{
+  setMounted(true)
+},[])
+
+if(!mounted) return null
+
+if(isPro){
+  return null
+}
 
   return (
     <div className="absolute  w-full bottom-0  ">
