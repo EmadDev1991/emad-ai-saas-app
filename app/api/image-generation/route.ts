@@ -46,7 +46,10 @@ export const POST = async (request: Request) => {
 
         const response = await openai.images.generate({ prompt: prompt, n: +amount, size: resolution, model: "dall-e-3" })
 
-        await increaseApiLimit()
+        if(!isPro){
+            await increaseApiLimit()
+        }
+        
       
         if (response) {
             return NextResponse.json(response.data)

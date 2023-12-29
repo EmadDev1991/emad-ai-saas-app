@@ -50,7 +50,10 @@ export const POST = async (request: Request) => {
             }
         );
 
-        await increaseApiLimit()
+        if(!isPro){
+            await increaseApiLimit()
+        }
+        
 
         if (response) {
             return NextResponse.json(response)

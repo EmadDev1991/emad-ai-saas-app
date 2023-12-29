@@ -49,8 +49,10 @@ export const POST = async (request: Request) => {
             messages: [ instructionMessage, ...messages],
         })
 
+        if(!isPro){
+            await increaseApiLimit()
+        }
         
-        await increaseApiLimit()
 
 
 
