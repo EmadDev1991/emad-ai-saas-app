@@ -18,6 +18,7 @@ import {
   Music,
   Code,
   Zap,
+  Loader,
 } from "lucide-react";
 
 import React, { useState } from "react";
@@ -107,7 +108,7 @@ const ProModal = () => {
           ))}
         </div>
         <DialogFooter>
-          <Button onClick={onSubscribe} className="w-full my-4 bg-gradient-to-r from-purple-400 to-pink-600 flex justify-center items-center gap-2">
+          <Button disabled={loading} onClick={onSubscribe} className="w-full my-4 bg-gradient-to-r from-purple-400 to-pink-600 flex justify-center items-center gap-2">
             <Zap className="w-4" />
             <p>Upgrade</p>
           </Button>
